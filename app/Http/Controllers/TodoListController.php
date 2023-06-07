@@ -5,15 +5,19 @@ namespace App\Http\Controllers;
 use App\Models\TodoList;
 use App\Http\Requests\StoreTodoListRequest;
 use App\Http\Requests\UpdateTodoListRequest;
+use Illuminate\Http\Request;
 
 class TodoListController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $req)
     {
-        //
+        $limit = $req->input('per_page') ?? 10;
+        return TodoList::select(['id', 'name', 'user_id'])
+        ->orderBy('name')
+        ->paginate($limit);
     }
 
     /**
