@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Todo;
-use App\Http\Requests\StoreTodoRequest;
 use App\Http\Requests\UpdateTodoRequest;
+use App\Models\TodoList;
 use Illuminate\Http\Request;
 
 class TodoController extends Controller
@@ -23,17 +23,9 @@ class TodoController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreTodoRequest $request)
+    public function store(Request $request)
     {
         //
     }

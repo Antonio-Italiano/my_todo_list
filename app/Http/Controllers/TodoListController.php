@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\TodoList;
-use App\Http\Requests\StoreTodoListRequest;
 use App\Http\Requests\UpdateTodoListRequest;
+use illuminate\Contracts\Support\jsonable;
 use Illuminate\Http\Request;
 
 class TodoListController extends Controller
@@ -16,7 +16,7 @@ class TodoListController extends Controller
     {
         $limit = $req->input('per_page') ?? 10;
         return TodoList::select(['id', 'name', 'user_id'])
-        ->orderBy('name')
+        ->orderBy('id', 'DESC')
         ->paginate($limit);
     }
 
@@ -31,9 +31,14 @@ class TodoListController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreTodoListRequest $request)
+    public function store(Request $request)
     {
-        //
+        $list = new TodoList();
+        $list->name = $request->name;
+        //TODO Reads user id from Session
+        $list->user_id = 1;
+        $res = $list->save();
+        return $this->getResult($list, $res, 'List created');
     }
 
     /**
@@ -67,4 +72,15 @@ class TodoListController extends Controller
     {
         //
     }
+
+    public function getResult( Jsonable $data, $success = true, $message = '') 
+    {
+        return [
+            'data' => $data,
+            'success' => $success,
+            'message' => $message
+        ];
+    }
+
+
 }
